@@ -5,21 +5,45 @@ app = Flask(__name__)
 
 
 def log_request(req: 'flask_request', res: str) -> None:
-    """Журналирование запросов и результатов обаботки в файле
-        vsearch.log"""
-    with open('vsearch.log', 'a') as log:
-        #данные из HTML-формы веб-приложения.
-        #IP-адрес веб-браузера, приславшего форму.
-        # строка, идентифицирующая браузер пользователя.
-        print(req.form, req.remote_addr, req.user_agent, res, file = log, sep = '|')
+    """Журналирование запросов и результатов обаботки в 
+    базе данных MySQL"""
+
+    # параметры соединения с бд
+    dbconfig = { 'host': '127.0.0.1',
+                'user': 'fvv',
+                'password': '0546Fvv-1',
+                'database': 'vsearchlogDB',}
+    # импорт драйвера
+    # установка соединения
+    # создание курсора
+    import mysql.connector
+    conn = mysql.connector.connect(**dbconfig)
+    cursor = conn.cursor()
+
+    # строка с текстом запроса
+    _SQL = """insert into log
+            (phrase, letters, ip, browser_string, results)
+            values
+            (%s, %s, %s, %s, %s)"""
+
+    # запуск запроса
+    # параметры: данные из HTML-формы веб-приложения      
+    cursor.execute(_SQL, (req.form['phrase'],
+                        req.form['letters'],
+                        req.remote_addr,
+                        req.user_agent.browser,
+                        res,))
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
 
         
 @app.route('/search4', methods=['POST'])
 def do_search() -> 'html':
     """ Считывание фразы и символов из полей формы
         Передача их функции search4letters
-        Журналирование
-        формирование формы с результатом"""
+        Журналирование формирование формы с результатом: сохранение в БД"""
     phrase = request.form['phrase']
     letters = request.form['letters']
     results = str(search4letters(phrase, letters))

@@ -62,7 +62,7 @@ border:             thin dotted gray;
 /*** Inputs ***/
 input[type=text] {
   font-size:        115%;
-  width:            30em;
+  width:            auto;
 }
 input[type=submit] {
   font-size:        125%;
