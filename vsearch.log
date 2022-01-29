@@ -1,0 +1,5 @@
+ImmutableMultiDict([('phrase', 'vlad'), ('letters', 'v')])|127.0.0.1|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0|{'v'}
+ImmutableMultiDict([('phrase', 'tatya'), ('letters', 't')])|127.0.0.1|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0|{'t'}
+ImmutableMultiDict([('phrase', 'anya'), ('letters', 'a')])|127.0.0.1|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0|{'a'}
+ImmutableMultiDict([('phrase', 'nikita'), ('letters', 'n')])|127.0.0.1|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0|{'n'}
+ImmutableMultiDict([('phrase', 'John'), ('letters', 'aeiou')])|127.0.0.1|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0|{'o'}
