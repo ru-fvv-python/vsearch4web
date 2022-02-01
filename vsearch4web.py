@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, escape
+from flask import Flask, render_template, request, session
 from vsearch import search4letters
+from checker import check_logged_in
+
 # диспетчер контекста
 from DBcm import UseDataBase
 
@@ -11,6 +13,22 @@ app.config['dbconfig'] = {'host': '127.0.0.1',
                         'user': 'fvv',
                         'password': '0546Fvv-1',
                         'database': 'vsearchlogDB',}
+
+                        
+app.secret_key = 'YouWillNeverGuessMySecretKey'
+
+@app.route('/login')
+def do_login() -> str:
+    """ авторизация пользователя: добавление элемента в словарь session """
+    session['logged_in'] = True
+    return 'You are now logged in.'
+
+
+@app.route('/logout')
+def do_logout() -> str:
+    """ выход пользователя: удаление элемента из словаря session"""
+    session.pop('logged_in')
+    return 'You are now logged out'
 
 
 def log_request(req: 'flask_request', res: str) -> None:
@@ -58,9 +76,11 @@ def entry_page() -> 'html':
 
 
 @app.route('/viewlog')
+@check_logged_in
 def view_the_log() -> 'html':
-    """Чтение содержимого журнала, преобразование в список списков
-        и вывод в виде HTML- таблицы"""
+    """ функция декорирована: выполнится только для аторизованного пользователя
+    Чтение содержимого журнала, преобразование в список списков
+    и вывод в виде HTML- таблицы"""
 
     with UseDataBase(app.config['dbconfig']) as cursor:
         _SQL = """select phrase, letters, ip, browser_string, results
